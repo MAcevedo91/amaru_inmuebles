@@ -1,0 +1,91 @@
+// Prisma Schema para Amaru Inmuebles
+// Gestión Inmobiliaria & Corretaje de Alto Estándar
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum InterestType {
+  VENDER
+  COMPRAR
+  ARRENDAR
+  TASACION
+  CONSULTA_GENERAL
+}
+
+enum PropertyType {
+  CASA
+  DEPARTAMENTO
+  PENTHOUSE
+  TERRENO
+  OFICINA
+  OTRO
+}
+
+enum OperationType {
+  VENTA
+  ARRIENDO
+}
+
+enum LeadStatus {
+  NUEVO
+  CONTACTADO
+  EN_EVALUACION
+  CONCRETADO
+  DESCARTADO
+}
+
+model ContactLead {
+  id           String        @id @default(cuid())
+  fullName     String
+  email        String
+  phone        String
+  interestType InterestType  @default(VENDER)
+  propertyType PropertyType? @default(CASA)
+  commune      String?
+  budgetRange  String?
+  message      String?
+  status       LeadStatus    @default(NUEVO)
+  source       String        @default("LANDING_PAGE")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([email])
+  @@index([interestType])
+  @@index([createdAt])
+  @@map("contact_leads")
+}
+
+model Property {
+  id           String        @id @default(cuid())
+  title        String
+  slug         String        @unique
+  description  String
+  operation    OperationType @default(VENTA)
+  propertyType PropertyType  @default(CASA)
+  price        Float
+  currency     String        @default("UF")
+  location     String
+  commune      String
+  bedrooms     Int
+  bathrooms    Int
+  builtArea    Float
+  totalArea    Float
+  parkingSpots Int           @default(2)
+  featured     Boolean       @default(true)
+  imageUrl     String
+  gallery      String[]      @default([])
+  features     String[]      @default([])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([operation])
+  @@index([featured])
+  @@index([commune])
+  @@map("properties")
+}
