@@ -117,18 +117,21 @@ Abre tu navegador en [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## ☁️ Despliegue en Vercel + Supabase
+## ☁️ Despliegue en Vercel (Prisma Postgres o PostgreSQL externo)
 
-1. **Crear proyecto en Supabase**: desde *Connect* obtén dos URLs de conexión PostgreSQL:
-   - `DATABASE_URL`: **Transaction pooler** (puerto `6543`, agregando `?pgbouncer=true` al final).
-   - `DIRECT_URL`: **Session pooler** (puerto `5432` en `*.pooler.supabase.com`, compatible con IPv4 desde Vercel).
-2. **Variables de entorno en Vercel**: configura `DATABASE_URL`, `DIRECT_URL` y `NEXT_PUBLIC_APP_URL` (tu dominio `.vercel.app`).
-3. **Aplicar migraciones y sembrar el catálogo en Supabase**:
+### Opción recomendada: Vercel + Prisma Postgres (en 1 clic)
+1. Al importar el proyecto en Vercel, agrega la integración **Prisma Postgres** (*Optional Integrations → Add*). Vercel inyectará `DATABASE_URL` automáticamente.
+2. Configura `NEXT_PUBLIC_APP_URL` con tu dominio de Vercel (`https://tu-proyecto.vercel.app`) y realiza el deploy.
+3. Aplica las migraciones y siembra las 7 propiedades iniciales una sola vez usando `DATABASE_URL` (obtenida desde Vercel o con `vercel env pull`):
    ```bash
-   DATABASE_URL="tu_transaction_pooler" DIRECT_URL="tu_session_pooler" npx prisma migrate deploy
-   DATABASE_URL="tu_transaction_pooler" DIRECT_URL="tu_session_pooler" npm run db:seed
+   DATABASE_URL="tu_database_url_de_vercel" npx prisma migrate deploy
+   DATABASE_URL="tu_database_url_de_vercel" npm run db:seed
    ```
-4. **Seguridad (RLS)**: activa *Row Level Security (RLS)* en las tablas `contact_leads` y `properties` dentro de Supabase (sin políticas para `anon`) para bloquear lecturas desde la API pública REST mientras Prisma opera normalmente en el servidor.
+
+### Opción alternativa: Supabase / PostgreSQL externo
+1. Usa tu URI de conexión PostgreSQL (Session pooler en puerto `5432` para evitar problemas con migraciones) en `DATABASE_URL`.
+2. Ejecuta `npx prisma migrate deploy` y `npm run db:seed`.
+3. Si usas Supabase, activa *Row Level Security (RLS)* en `contact_leads` y `properties` (sin políticas públicas `anon`).
 
 ---
 
