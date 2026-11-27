@@ -9,60 +9,54 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        amaru: {
-          50: "#FAF7F2",
-          100: "#F4EFE6",
-          200: "#E6DBCF",
-          300: "#D3BEA7",
-          400: "#B89975",
-          500: "#9B764B", // Color base exacto del logo Amaru Inmuebles
-          600: "#86623C",
-          700: "#6B4D2F",
-          800: "#543C25",
-          900: "#3E2C1B",
-          950: "#22170E",
+        // Acento único — amber cálido de la imagen de referencia
+        gold: {
+          50:  "#FFFBEB",
+          100: "#FEF3C7",
+          200: "#FDE68A",
+          300: "#FCD34D",
+          400: "#FBBF24",
+          500: "#F5A623", // ← acento principal: botones, links activos
+          600: "#D97706",
+          700: "#B45309",
+          800: "#92400E",
+          900: "#78350F",
         },
-        executive: {
-          900: "#111215",
-          800: "#1A1C21",
-          700: "#272A32",
-          600: "#4B5262",
-          500: "#6E7787",
-          400: "#9CA3AF",
-          300: "#D1D5DB",
-          200: "#E5E7EB",
-          100: "#F3F4F6",
-          50: "#F9FAFB",
+        // Ramp neutral cálida (grafito levemente cálido)
+        ink: {
+          50:  "#F9F8F7",
+          100: "#F2F0EE",
+          200: "#E5E1DC",
+          300: "#CCC5BC",
+          400: "#A89E92",
+          500: "#857870",
+          600: "#6B5E55",
+          700: "#4A3F38",
+          800: "#2D2520",
+          900: "#1A1310",
+          950: "#0F0C09",
         },
-        champagne: {
-          50: "#FCFAF7",
-          100: "#F8F4EE",
-          200: "#EFE8DC",
-          300: "#E3D5C0",
+        // Superficie oscura del hero y la banner
+        dark: {
+          900: "#0F1114",
+          800: "#15181E",
+          700: "#1E2229",
         },
       },
       fontFamily: {
-        serif: ["Georgia", "Playfair Display", "Cambria", "serif"],
         sans: [
           "system-ui",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
-          "Roboto",
           "Helvetica Neue",
           "Arial",
           "sans-serif",
         ],
       },
       boxShadow: {
-        luxury:
-          "0 10px 30px -10px rgba(0, 0, 0, 0.05), 0 20px 40px -15px rgba(155, 118, 75, 0.07)",
-        "luxury-hover":
-          "0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 25px 50px -12px rgba(155, 118, 75, 0.15)",
-      },
-      letterSpacing: {
-        widest: ".2em",
-        luxury: ".15em",
+        card: "0 1px 3px 0 rgba(0,0,0,0.06), 0 1px 2px -1px rgba(0,0,0,0.04)",
+        "card-hover": "0 4px 12px 0 rgba(0,0,0,0.08), 0 2px 6px -2px rgba(0,0,0,0.05)",
       },
     },
   },

@@ -3,338 +3,205 @@
 import React, { useState } from "react";
 import { PropertyItem } from "@/types";
 import { formatPrice, formatArea } from "@/lib/utils";
-import {
-  Bed,
-  Bath,
-  Maximize2,
-  Car,
-  MapPin,
-  ArrowRight,
-  SlidersHorizontal,
-  Eye,
-  Check,
-} from "lucide-react";
+import { Bed, Bath, Maximize2, Car, MapPin, ArrowRight, Check, Eye, SlidersHorizontal } from "lucide-react";
 
 interface FeaturedPropertiesProps {
   properties: PropertyItem[];
-  onSelectProperty?: (prop: PropertyItem) => void;
+  onSelectProperty?: (p: PropertyItem) => void;
 }
 
-export function FeaturedPropertiesSection({
-  properties,
-  onSelectProperty,
-}: FeaturedPropertiesProps) {
-  const [activeFilter, setActiveFilter] = useState<string>("TODAS");
-  const [modalProperty, setModalProperty] = useState<PropertyItem | null>(null);
+export function FeaturedPropertiesSection({ properties, onSelectProperty }: FeaturedPropertiesProps) {
+  const [filter, setFilter] = useState("TODAS");
+  const [modal, setModal] = useState<PropertyItem | null>(null);
 
-  const filteredProperties = properties.filter((item) => {
-    if (activeFilter === "TODAS") return true;
-    if (activeFilter === "CASAS") return item.propertyType === "CASA";
-    if (activeFilter === "DEPARTAMENTOS")
-      return item.propertyType === "DEPARTAMENTO";
-    if (activeFilter === "PENTHOUSES")
-      return item.propertyType === "PENTHOUSE";
-    if (activeFilter === "VENTA") return item.operation === "VENTA";
-    if (activeFilter === "ARRIENDO") return item.operation === "ARRIENDO";
+  const FILTERS = [
+    { key: "TODAS",         label: "Todas" },
+    { key: "CASAS",         label: "Casas" },
+    { key: "PENTHOUSES",    label: "Penthouses" },
+    { key: "DEPARTAMENTOS", label: "Departamentos" },
+    { key: "VENTA",         label: "En venta" },
+    { key: "ARRIENDO",      label: "En arriendo" },
+  ];
+
+  const filtered = properties.filter((p) => {
+    if (filter === "TODAS")         return true;
+    if (filter === "CASAS")         return p.propertyType === "CASA";
+    if (filter === "PENTHOUSES")    return p.propertyType === "PENTHOUSE";
+    if (filter === "DEPARTAMENTOS") return p.propertyType === "DEPARTAMENTO";
+    if (filter === "VENTA")         return p.operation === "VENTA";
+    if (filter === "ARRIENDO")      return p.operation === "ARRIENDO";
     return true;
   });
 
-  const filterButtons = [
-    { label: "Todas las propiedades", key: "TODAS" },
-    { label: "Casas", key: "CASAS" },
-    { label: "Penthouses", key: "PENTHOUSES" },
-    { label: "Departamentos", key: "DEPARTAMENTOS" },
-    { label: "En Venta", key: "VENTA" },
-    { label: "En Arriendo", key: "ARRIENDO" },
-  ];
-
-  const handleInquire = (property: PropertyItem) => {
-    if (onSelectProperty) {
-      onSelectProperty(property);
-    }
-    const contactSection = document.getElementById("contacto");
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth" });
-    }
-    setModalProperty(null);
+  const goToContact = (p: PropertyItem) => {
+    onSelectProperty?.(p);
+    document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" });
+    setModal(null);
   };
 
   return (
-    <section id="propiedades" className="py-24 bg-white border-t border-black/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Cabecera de la sección */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-          <div className="space-y-3 max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] font-semibold text-amaru-700 block">
-              CATÁLOGO SELECTO
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-light text-executive-900 tracking-tight">
-              Propiedades destacadas en{" "}
-              <span className="font-normal text-amaru-700">gestión exclusiva</span>
+    <section id="propiedades" className="bg-ink-50 py-20 border-t border-ink-100">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+        {/* Cabecera */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
+          <div className="space-y-2">
+            <h2 className="text-3xl font-bold text-ink-900 tracking-tight">
+              Propiedades en gestión exclusiva
             </h2>
-            <p className="text-sm sm:text-base text-executive-600 font-light leading-relaxed">
-              Residencias cuidadosamente evaluadas bajo estrictos parámetros de
-              arquitectura, ubicación estratégica y plusvalía patrimonial.
+            <p className="text-sm text-ink-500">
+              Residencias seleccionadas por arquitectura, ubicación y plusvalía.
             </p>
           </div>
-
-          {/* Botón secundario */}
-          <div className="mt-6 md:mt-0">
-            <a
-              href="#contacto"
-              className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] font-medium text-amaru-700 hover:text-amaru-800 transition-colors"
-            >
-              <span>Consultar por propiedades privadas (Off-Market)</span>
-              <ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
+          <a
+            href="#contacto"
+            className="shrink-0 text-sm font-medium text-ink-900 hover:text-gold-600 flex items-center gap-1 transition-colors"
+          >
+            Consultar off-market <ArrowRight className="w-4 h-4" />
+          </a>
         </div>
 
-        {/* Filtros de Categorías */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-10 scrollbar-none border-b border-black/5">
-          <SlidersHorizontal className="w-4 h-4 text-amaru-600 mr-2 shrink-0 hidden sm:block" />
-          {filterButtons.map((btn) => (
+        {/* Filtros */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 mb-8">
+          <SlidersHorizontal className="w-4 h-4 text-ink-400 shrink-0" />
+          {FILTERS.map((f) => (
             <button
-              key={btn.key}
-              onClick={() => setActiveFilter(btn.key)}
-              className={`px-4 py-2 text-xs uppercase tracking-wider font-medium rounded-full whitespace-nowrap transition-all duration-200 ${
-                activeFilter === btn.key
-                  ? "bg-executive-900 text-white shadow-sm"
-                  : "bg-executive-50 text-executive-600 hover:bg-amaru-50 hover:text-executive-900"
+              key={f.key}
+              onClick={() => setFilter(f.key)}
+              className={`px-4 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-colors ${
+                filter === f.key
+                  ? "bg-ink-900 text-white"
+                  : "bg-white text-ink-600 border border-ink-200 hover:border-ink-400"
               }`}
             >
-              {btn.label}
+              {f.label}
             </button>
           ))}
         </div>
 
-        {/* Grilla de Propiedades */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProperties.map((property) => (
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map((p) => (
             <article
-              key={property.id}
-              className="group bg-[#FCFAF7] rounded-sm overflow-hidden border border-black/5 hover:border-amaru-400/40 hover:shadow-luxury transition-all duration-300 flex flex-col justify-between"
+              key={p.id}
+              className="bg-white rounded-lg overflow-hidden border border-ink-100 hover:shadow-card-hover transition-shadow flex flex-col"
             >
-              <div>
-                {/* Imagen y Badges */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-executive-100">
-                  <img
-                    src={property.imageUrl}
-                    alt={property.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
-
-                  {/* Badges superiores */}
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <span className="bg-white/95 text-executive-900 text-[10px] uppercase tracking-wider font-semibold px-2.5 py-1 rounded shadow-sm">
-                      {property.operation === "VENTA" ? "En Venta" : "En Arriendo"}
-                    </span>
-                    <span className="bg-amaru-600 text-white text-[10px] uppercase tracking-wider font-semibold px-2.5 py-1 rounded shadow-sm">
-                      Exclusividad Amaru
-                    </span>
-                  </div>
-
-                  {/* Ubicación y Comuna sobre la foto */}
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
-                    <div className="flex items-center gap-1.5 truncate">
-                      <MapPin className="w-3.5 h-3.5 text-amaru-300 shrink-0" />
-                      <span className="font-light truncate">
-                        {property.location}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Contenido de la Tarjeta */}
-                <div className="p-6 space-y-4">
-                  {/* Precio */}
-                  <div className="flex items-baseline justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase tracking-widest text-executive-500 font-medium block">
-                        Valor
-                      </span>
-                      <p className="text-2xl font-light tracking-tight text-executive-900">
-                        {formatPrice(property.price, property.currency)}
-                      </p>
-                    </div>
-                    <span className="text-xs text-amaru-700 bg-amaru-50 border border-amaru-200 px-2 py-0.5 rounded font-medium">
-                      {property.propertyType}
-                    </span>
-                  </div>
-
-                  {/* Título */}
-                  <h3 className="text-base font-normal text-executive-900 group-hover:text-amaru-700 transition-colors line-clamp-2">
-                    {property.title}
-                  </h3>
-
-                  {/* Especificaciones Técnicas */}
-                  <div className="grid grid-cols-4 gap-2 py-3 border-y border-black/5 text-executive-600 text-xs">
-                    <div className="flex flex-col items-center justify-center p-1.5 bg-white rounded-sm text-center">
-                      <Bed className="w-3.5 h-3.5 text-amaru-600 mb-1" />
-                      <span className="font-medium text-executive-900">
-                        {property.bedrooms}
-                      </span>
-                      <span className="text-[10px] text-executive-500">Dorms</span>
-                    </div>
-
-                    <div className="flex flex-col items-center justify-center p-1.5 bg-white rounded-sm text-center">
-                      <Bath className="w-3.5 h-3.5 text-amaru-600 mb-1" />
-                      <span className="font-medium text-executive-900">
-                        {property.bathrooms}
-                      </span>
-                      <span className="text-[10px] text-executive-500">Baños</span>
-                    </div>
-
-                    <div className="flex flex-col items-center justify-center p-1.5 bg-white rounded-sm text-center">
-                      <Maximize2 className="w-3.5 h-3.5 text-amaru-600 mb-1" />
-                      <span className="font-medium text-executive-900">
-                        {property.builtArea}
-                      </span>
-                      <span className="text-[10px] text-executive-500">m² Útiles</span>
-                    </div>
-
-                    <div className="flex flex-col items-center justify-center p-1.5 bg-white rounded-sm text-center">
-                      <Car className="w-3.5 h-3.5 text-amaru-600 mb-1" />
-                      <span className="font-medium text-executive-900">
-                        {property.parkingSpots}
-                      </span>
-                      <span className="text-[10px] text-executive-500">Estac.</span>
-                    </div>
-                  </div>
-
-                  {/* Destacados / Características */}
-                  <div className="space-y-1.5 pt-1">
-                    {property.features.slice(0, 2).map((feat, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center gap-2 text-xs text-executive-500 font-light"
-                      >
-                        <Check className="w-3 h-3 text-amaru-600 shrink-0" />
-                        <span className="truncate">{feat}</span>
-                      </div>
-                    ))}
-                  </div>
+              {/* Imagen */}
+              <div className="relative aspect-[16/10] overflow-hidden bg-ink-100">
+                <img
+                  src={p.imageUrl}
+                  alt={p.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                />
+                <div className="absolute top-3 left-3 flex gap-1.5">
+                  <span className="bg-dark-900 text-white text-[10px] font-medium px-2 py-0.5 rounded">
+                    {p.operation === "VENTA" ? "En venta" : "En arriendo"}
+                  </span>
                 </div>
               </div>
 
-              {/* Botones de acción al pie de la tarjeta */}
-              <div className="p-6 pt-0 grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setModalProperty(property)}
-                  className="inline-flex items-center justify-center gap-1.5 text-xs font-medium text-executive-700 bg-white hover:bg-executive-50 border border-black/10 py-2.5 rounded transition-colors"
-                >
-                  <Eye className="w-3.5 h-3.5 text-amaru-600" />
-                  <span>Ver Ficha</span>
-                </button>
+              {/* Cuerpo */}
+              <div className="p-5 flex flex-col flex-1 gap-4">
+                {/* Precio + tipo */}
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="text-xl font-bold text-ink-900">
+                      {formatPrice(p.price, p.currency)}
+                    </p>
+                    <p className="text-xs text-ink-400 flex items-center gap-1 mt-0.5">
+                      <MapPin className="w-3 h-3" /> {p.commune}
+                    </p>
+                  </div>
+                  <span className="shrink-0 text-[10px] font-semibold text-gold-700 bg-gold-100 px-2 py-0.5 rounded">
+                    {p.propertyType}
+                  </span>
+                </div>
 
-                <button
-                  type="button"
-                  onClick={() => handleInquire(property)}
-                  className="inline-flex items-center justify-center gap-1.5 text-xs font-medium text-white bg-amaru-600 hover:bg-amaru-700 py-2.5 rounded transition-colors"
-                >
-                  <span>Consultar</span>
-                  <ArrowRight className="w-3 h-3" />
-                </button>
+                {/* Título */}
+                <h3 className="text-sm font-semibold text-ink-900 leading-snug line-clamp-2">
+                  {p.title}
+                </h3>
+
+                {/* Especificaciones */}
+                <div className="flex items-center gap-4 text-xs text-ink-500 py-3 border-y border-ink-100">
+                  <span className="flex items-center gap-1"><Bed className="w-3.5 h-3.5" /> {p.bedrooms}</span>
+                  <span className="flex items-center gap-1"><Bath className="w-3.5 h-3.5" /> {p.bathrooms}</span>
+                  <span className="flex items-center gap-1"><Maximize2 className="w-3.5 h-3.5" /> {p.builtArea} m²</span>
+                  <span className="flex items-center gap-1"><Car className="w-3.5 h-3.5" /> {p.parkingSpots}</span>
+                </div>
+
+                {/* Features */}
+                <ul className="space-y-1 flex-1">
+                  {p.features.slice(0, 2).map((f, i) => (
+                    <li key={i} className="flex items-center gap-1.5 text-xs text-ink-500">
+                      <Check className="w-3 h-3 text-gold-500 shrink-0" /> {f}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Acciones */}
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <button
+                    onClick={() => setModal(p)}
+                    className="flex items-center justify-center gap-1 text-xs font-medium text-ink-700 bg-ink-50 hover:bg-ink-100 border border-ink-200 py-2 rounded transition-colors"
+                  >
+                    <Eye className="w-3.5 h-3.5" /> Ver ficha
+                  </button>
+                  <button
+                    onClick={() => goToContact(p)}
+                    className="flex items-center justify-center gap-1 text-xs font-semibold text-dark-900 bg-gold-500 hover:bg-gold-600 py-2 rounded transition-colors"
+                  >
+                    Consultar <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             </article>
           ))}
         </div>
 
-        {/* Modal de Detalle Rápido de Propiedad */}
-        {modalProperty && (
+        {/* Modal ficha */}
+        {modal && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark-900/70 backdrop-blur-sm"
             role="dialog"
             aria-modal="true"
           >
-            <div className="bg-white rounded-sm max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 shadow-2xl border border-amaru-200 relative">
-              <button
-                onClick={() => setModalProperty(null)}
-                className="absolute top-4 right-4 p-2 text-executive-400 hover:text-executive-900 focus:outline-none"
-                aria-label="Cerrar ficha"
-              >
-                ✕
-              </button>
-
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-amaru-600 font-semibold">
-                  <span>{modalProperty.operation}</span>
-                  <span>•</span>
-                  <span>{modalProperty.propertyType}</span>
-                </div>
-                <h3 className="text-2xl font-light text-executive-900">
-                  {modalProperty.title}
-                </h3>
-                <p className="text-xs text-executive-500 flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-amaru-600" />
-                  {modalProperty.location}
-                </p>
+            <div className="bg-white rounded-lg max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+              <div className="relative aspect-video overflow-hidden rounded-t-lg">
+                <img src={modal.imageUrl} alt={modal.title} className="w-full h-full object-cover" />
+                <button
+                  onClick={() => setModal(null)}
+                  className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-dark-900/70 text-white text-sm hover:bg-dark-900 transition-colors"
+                  aria-label="Cerrar"
+                >✕</button>
               </div>
-
-              <div className="aspect-[16/9] w-full rounded-sm overflow-hidden">
-                <img
-                  src={modalProperty.imageUrl}
-                  alt={modalProperty.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <div className="p-4 bg-amaru-50/60 rounded-sm border border-amaru-200/60 flex items-center justify-between">
+              <div className="p-6 space-y-4">
                 <div>
-                  <span className="text-[11px] text-executive-500 uppercase tracking-wider block">
-                    Precio solicitado
-                  </span>
-                  <span className="text-2xl font-light text-executive-900">
-                    {formatPrice(modalProperty.price, modalProperty.currency)}
-                  </span>
+                  <span className="text-xs font-semibold text-gold-600">{modal.operation} · {modal.propertyType}</span>
+                  <h3 className="text-lg font-bold text-ink-900 mt-1">{modal.title}</h3>
+                  <p className="text-xs text-ink-500 mt-0.5 flex items-center gap-1"><MapPin className="w-3 h-3" />{modal.location}</p>
                 </div>
-                <div className="text-right text-xs text-executive-600">
-                  <div>Útiles: {formatArea(modalProperty.builtArea)}</div>
-                  <div>Totales: {formatArea(modalProperty.totalArea)}</div>
+                <div className="bg-ink-50 rounded-lg p-4 flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] text-ink-500 block">Precio</span>
+                    <span className="text-2xl font-bold text-ink-900">{formatPrice(modal.price, modal.currency)}</span>
+                  </div>
+                  <div className="text-right text-xs text-ink-500">
+                    <div>Útiles: {formatArea(modal.builtArea)}</div>
+                    <div>Totales: {formatArea(modal.totalArea)}</div>
+                  </div>
                 </div>
-              </div>
-
-              <div className="space-y-3">
-                <h4 className="text-xs uppercase tracking-widest font-semibold text-executive-800">
-                  Descripción Arquitectónica
-                </h4>
-                <p className="text-sm text-executive-600 font-light leading-relaxed">
-                  {modalProperty.description}
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <h4 className="text-xs uppercase tracking-widest font-semibold text-executive-800">
-                  Equipamiento & Amenidades
-                </h4>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-executive-600">
-                  {modalProperty.features.map((feat, idx) => (
-                    <li key={idx} className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-amaru-600" />
-                      <span>{feat}</span>
-                    </li>
+                <p className="text-sm text-ink-600 leading-relaxed">{modal.description}</p>
+                <ul className="grid grid-cols-2 gap-1.5 text-xs text-ink-600">
+                  {modal.features.map((f, i) => (
+                    <li key={i} className="flex items-center gap-1.5"><Check className="w-3 h-3 text-gold-500 shrink-0" />{f}</li>
                   ))}
                 </ul>
-              </div>
-
-              <div className="pt-4 border-t border-black/10 flex items-center justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => setModalProperty(null)}
-                  className="px-5 py-2.5 text-xs uppercase tracking-wider font-medium text-executive-600 hover:text-executive-900"
-                >
-                  Cerrar
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleInquire(modalProperty)}
-                  className="px-6 py-2.5 text-xs uppercase tracking-wider font-medium text-white bg-amaru-600 hover:bg-amaru-700 rounded shadow"
-                >
-                  Coordinar Visita Privada
-                </button>
+                <div className="flex gap-2 pt-2">
+                  <button onClick={() => setModal(null)} className="flex-1 text-xs font-medium text-ink-600 py-2.5 border border-ink-200 rounded hover:bg-ink-50 transition-colors">Cerrar</button>
+                  <button onClick={() => goToContact(modal)} className="flex-1 text-xs font-semibold text-dark-900 bg-gold-500 hover:bg-gold-600 py-2.5 rounded transition-colors">Coordinar visita</button>
+                </div>
               </div>
             </div>
           </div>

@@ -3,57 +3,54 @@
 import React, { useState } from "react";
 import { PropertyItem } from "@/types";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { FeatureCardsSection } from "@/components/sections/FeatureCardsSection";
+import { CtaBannerSection } from "@/components/sections/CtaBannerSection";
 import { FeaturedPropertiesSection } from "@/components/sections/FeaturedPropertiesSection";
+import { AgentsSectionNew } from "@/components/sections/AgentsSectionNew";
 import { ServicesSection } from "@/components/sections/ServicesSection";
-import { AboutSection } from "@/components/sections/AboutSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 
 interface LandingPageClientProps {
   initialProperties: PropertyItem[];
 }
 
-export function LandingPageClient({
-  initialProperties,
-}: LandingPageClientProps) {
+export function LandingPageClient({ initialProperties }: LandingPageClientProps) {
   const [properties, setProperties] = useState<PropertyItem[]>(initialProperties);
-  const [selectedProperty, setSelectedProperty] = useState<PropertyItem | null>(
-    null
-  );
+  const [selectedProperty, setSelectedProperty] = useState<PropertyItem | null>(null);
 
-  const handleHeroFilter = (filters: {
-    operation?: string;
-    type?: string;
-    commune?: string;
-  }) => {
+  const handleFilter = (f: { operation?: string; type?: string; commune?: string }) => {
     let filtered = [...initialProperties];
-    if (filters.operation) {
-      filtered = filtered.filter((p) => p.operation === filters.operation);
-    }
-    if (filters.type) {
-      filtered = filtered.filter((p) => p.propertyType === filters.type);
-    }
-    if (filters.commune) {
-      filtered = filtered.filter((p) =>
-        p.commune.toLowerCase().includes(filters.commune!.toLowerCase())
-      );
-    }
+    if (f.operation) filtered = filtered.filter((p) => p.operation === f.operation);
+    if (f.type) filtered = filtered.filter((p) => p.propertyType === f.type);
+    if (f.commune) filtered = filtered.filter((p) => p.commune.toLowerCase().includes(f.commune!.toLowerCase()));
     setProperties(filtered);
   };
 
-  const handleSelectProperty = (property: PropertyItem) => {
-    setSelectedProperty(property);
-  };
-
   return (
-    <div className="flex flex-col min-h-screen">
-      <HeroSection onFilterChange={handleHeroFilter} />
+    <>
+      {/* 1. Hero — fotografía full-bleed + buscador */}
+      <HeroSection onFilterChange={handleFilter} />
+
+      {/* 2. Cuatro criterios de búsqueda */}
+      <FeatureCardsSection />
+
+      {/* 3. Banner oscuro con foto de propiedad premium */}
+      <CtaBannerSection />
+
+      {/* 4. Agentes + propiedad destacada */}
+      <AgentsSectionNew />
+
+      {/* 5. Catálogo filtrable */}
       <FeaturedPropertiesSection
         properties={properties}
-        onSelectProperty={handleSelectProperty}
+        onSelectProperty={setSelectedProperty}
       />
+
+      {/* 6. Servicios */}
       <ServicesSection />
-      <AboutSection />
+
+      {/* 7. Formulario de contacto */}
       <ContactSection selectedProperty={selectedProperty} />
-    </div>
+    </>
   );
 }
