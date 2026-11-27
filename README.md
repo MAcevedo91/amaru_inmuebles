@@ -117,6 +117,21 @@ Abre tu navegador en [http://localhost:3000](http://localhost:3000).
 
 ---
 
+## ☁️ Despliegue en Vercel + Supabase
+
+1. **Crear proyecto en Supabase**: desde *Connect* obtén dos URLs de conexión PostgreSQL:
+   - `DATABASE_URL`: **Transaction pooler** (puerto `6543`, agregando `?pgbouncer=true` al final).
+   - `DIRECT_URL`: **Session pooler** (puerto `5432` en `*.pooler.supabase.com`, compatible con IPv4 desde Vercel).
+2. **Variables de entorno en Vercel**: configura `DATABASE_URL`, `DIRECT_URL` y `NEXT_PUBLIC_APP_URL` (tu dominio `.vercel.app`).
+3. **Aplicar migraciones y sembrar el catálogo en Supabase**:
+   ```bash
+   DATABASE_URL="tu_transaction_pooler" DIRECT_URL="tu_session_pooler" npx prisma migrate deploy
+   DATABASE_URL="tu_transaction_pooler" DIRECT_URL="tu_session_pooler" npm run db:seed
+   ```
+4. **Seguridad (RLS)**: activa *Row Level Security (RLS)* en las tablas `contact_leads` y `properties` dentro de Supabase (sin políticas para `anon`) para bloquear lecturas desde la API pública REST mientras Prisma opera normalmente en el servidor.
+
+---
+
 ## 💎 Características Principales
 
 1. **Diseño Fiel a la Identidad**: Inspirado en el isotipo arquitectónico y tipografía de **Amaru Inmuebles**, aplicando el tono bronce `#9B764B`, negros carbón suaves y fondos crema `#FDFBF7`.
