@@ -2,96 +2,126 @@
 
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 const NAV_LINKS = [
-  { label: "Inicio",      href: "#inicio" },
+  { label: "Inicio", href: "#inicio" },
   { label: "Propiedades", href: "#propiedades" },
-  { label: "Nosotros",    href: "#nosotros" },
-  { label: "Contacto",    href: "#contacto" },
+  { label: "Servicios", href: "#servicios" },
+  { label: "Asesores", href: "#nosotros" },
+  { label: "Contacto", href: "#contacto" },
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [activeHref, setActiveHref] = useState("#inicio");
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-dark-900/95 backdrop-blur-md shadow-lg" : "bg-transparent"
+      className={`fixed top-0 inset-x-0 z-50 transition-colors duration-200 ease-architecture ${
+        scrolled
+          ? "bg-dark-950/95 backdrop-blur-md border-b border-white/10 shadow-sm"
+          : "bg-dark-900/95 backdrop-blur-sm border-b border-white/10"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex items-center justify-between h-[72px] gap-6">
+          {/* Logo nítido vectorial + wordmark */}
+          <BrandLogo variant="light" showTagline={true} />
 
-        {/* Logo */}
-        <a href="#inicio" className="flex items-center gap-2 shrink-0" aria-label="Amaru Inmuebles">
-          <img src="/logo.png" alt="Amaru Inmuebles" className="h-8 w-auto brightness-0 invert" />
-        </a>
+          {/* Enlaces centrados con contraste garantizado */}
+          <nav className="hidden lg:flex items-center gap-8" aria-label="Navegación principal">
+            {NAV_LINKS.map((link) => {
+              const isActive = activeHref === link.href;
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setActiveHref(link.href)}
+                  className={`text-sm font-medium transition-colors duration-150 ${
+                    isActive
+                      ? "text-gold-400"
+                      : "text-slate-100 hover:text-gold-300"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
+          </nav>
 
-        {/* Nav links — desktop */}
-        <nav className="hidden lg:flex items-center gap-8">
-          {NAV_LINKS.map((l) => (
+          {/* Dos acciones a la derecha tal como en la referencia */}
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
             <a
-              key={l.href}
-              href={l.href}
-              className="text-sm font-medium text-gold-500 hover:text-gold-400 transition-colors"
+              href="#contacto"
+              className="btn-outline-light text-sm py-2 px-5"
             >
-              {l.label}
+              Contacto
             </a>
-          ))}
-        </nav>
+            <a
+              href="#propiedades"
+              className="btn-gold text-sm py-2 px-5"
+            >
+              Ver propiedades
+            </a>
+          </div>
 
-        {/* Actions — desktop */}
-        <div className="hidden lg:flex items-center gap-3">
-          <a
-            href="#contacto"
-            className="text-sm font-medium text-white border border-white/30 hover:border-gold-500 hover:text-gold-500 px-5 py-2 rounded transition-colors"
+          {/* Botón menú móvil */}
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg text-white hover:bg-white/10 transition-colors"
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={open}
           >
-            Contacto
-          </a>
-          <a
-            href="#propiedades"
-            className="text-sm font-medium bg-dark-900 hover:bg-dark-800 text-white px-5 py-2 rounded transition-colors border border-white/10"
-          >
-            Ver propiedades
-          </a>
+            {open ? <X className="w-5 h-5" strokeWidth={1.5} /> : <Menu className="w-5 h-5" strokeWidth={1.5} />}
+          </button>
         </div>
-
-        {/* Hamburger — mobile */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="lg:hidden p-2 text-white"
-          aria-label="Menú"
-        >
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Menú móvil desplegable con contraste alto */}
       {open && (
-        <div className="lg:hidden bg-dark-900/98 backdrop-blur-xl border-t border-white/10 px-6 py-6 space-y-4">
-          {NAV_LINKS.map((l) => (
+        <div className="lg:hidden bg-dark-950 border-t border-white/10 px-6 pb-6 pt-3">
+          <nav className="flex flex-col" aria-label="Navegación móvil">
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => {
+                  setActiveHref(link.href);
+                  setOpen(false);
+                }}
+                className="py-3 text-sm font-medium text-slate-100 hover:text-gold-400 border-b border-white/10 transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+          <div className="mt-4 flex flex-col gap-3">
             <a
-              key={l.href}
-              href={l.href}
+              href="#contacto"
               onClick={() => setOpen(false)}
-              className="block text-sm font-medium text-gold-500 py-2 border-b border-white/5"
+              className="btn-outline-light w-full justify-center"
             >
-              {l.label}
+              Contacto directo
             </a>
-          ))}
-          <a
-            href="#contacto"
-            onClick={() => setOpen(false)}
-            className="block text-center text-sm font-medium text-white bg-gold-500 hover:bg-gold-600 px-5 py-3 rounded mt-4 transition-colors"
-          >
-            Solicitar asesoría
-          </a>
+            <a
+              href="#propiedades"
+              onClick={() => setOpen(false)}
+              className="btn-gold w-full justify-center"
+            >
+              Ver propiedades
+            </a>
+          </div>
         </div>
       )}
     </header>

@@ -1,100 +1,92 @@
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 interface BrandLogoProps {
-  variant?: "light" | "dark" | "monochrome";
-  size?: "sm" | "md" | "lg";
+  variant?: "light" | "dark";
   showTagline?: boolean;
   className?: string;
 }
 
-export function BrandLogo({
-  variant = "dark",
-  size = "md",
-  showTagline = true,
-  className,
-}: BrandLogoProps) {
-  const isLight = variant === "light";
-
-  const sizeClasses = {
-    sm: "h-9",
-    md: "h-12",
-    lg: "h-16",
-  };
-
-  return (
-    <Link
-      href="#inicio"
-      className={cn(
-        "group inline-flex items-center gap-3 transition-opacity duration-200 hover:opacity-90",
-        className
-      )}
-      aria-label="Amaru Inmuebles - Inicio"
-    >
-      <div className="relative flex items-center justify-center">
-        {/* Usamos la imagen original de la marca fiel a 6.1.PNG */}
-        <div
-          className={cn(
-            "relative overflow-hidden transition-transform duration-300 group-hover:scale-105",
-            sizeClasses[size]
-          )}
-        >
-          <img
-            src="/logo.png"
-            alt="Amaru Inmuebles"
-            className={cn(
-              "h-full w-auto object-contain",
-              isLight && "brightness-0 invert drop-shadow-[0_2px_10px_rgba(255,255,255,0.15)]"
-            )}
-          />
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-// Emblema arquitectónico SVG fiel al isotipo de 6.1.PNG para detalles visuales y acentos
+/**
+ * Isotipo vectorial fiel a 6.1.PNG (triple cubierta arquitectónica con ventana de 4 paneles)
+ * combinado con wordmark tipográfico de alta legibilidad en cualquier resolución.
+ */
 export function ArchitecturalEmblem({
   className,
-  size = 40,
+  width = 48,
+  height = 28,
 }: {
   className?: string;
-  size?: number;
+  width?: number;
+  height?: number;
 }) {
   return (
     <svg
-      width={size}
-      height={size}
-      viewBox="0 0 200 120"
+      width={width}
+      height={height}
+      viewBox="0 0 120 68"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-hidden="true"
     >
-      {/* Techo principal con ventana */}
-      <path
-        d="M20 100 L80 40 L140 100 L115 100 L80 65 L45 100 Z"
-        fill="currentColor"
-      />
-      {/* 4 paneles de la ventana cuadrada */}
-      <rect x="73" y="75" width="6" height="6" rx="1" fill="currentColor" />
-      <rect x="81" y="75" width="6" height="6" rx="1" fill="currentColor" />
-      <rect x="73" y="83" width="6" height="6" rx="1" fill="currentColor" />
-      <rect x="81" y="83" width="6" height="6" rx="1" fill="currentColor" />
-
-      {/* Segundo techo inclinado paralelo a la derecha */}
-      <path
-        d="M100 40 L130 40 L165 95 L145 95 L115 50 L100 50 Z"
-        fill="currentColor"
-      />
-
-      {/* Tercer techo inclinado paralelo a la derecha */}
-      <path
-        d="M135 40 L165 40 L200 95 L180 95 L150 50 L135 50 Z"
-        fill="currentColor"
-      />
+      {/* Primera cubierta principal */}
+      <path d="M4 58L38 14L72 58H58L38 32L18 58H4Z" fill="currentColor" />
+      {/* Ventana de cuatro paños */}
+      <rect x="33" y="42" width="4.2" height="4.2" fill="currentColor" />
+      <rect x="38.8" y="42" width="4.2" height="4.2" fill="currentColor" />
+      <rect x="33" y="47.8" width="4.2" height="4.2" fill="currentColor" />
+      <rect x="38.8" y="47.8" width="4.2" height="4.2" fill="currentColor" />
+      {/* Segunda cubierta paralela */}
+      <path d="M51 22L60 14L94 58H80L51 22Z" fill="currentColor" />
+      {/* Tercera cubierta paralela */}
+      <path d="M73 22L82 14L116 58H102L73 22Z" fill="currentColor" />
     </svg>
+  );
+}
+
+export function BrandLogo({
+  variant = "light",
+  showTagline = true,
+  className,
+}: BrandLogoProps) {
+  const isLight = variant === "light";
+
+  return (
+    <Link
+      href="#inicio"
+      className={cn(
+        "inline-flex items-center gap-3 transition-opacity duration-150 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 rounded-md",
+        className
+      )}
+      aria-label="Amaru Inmuebles - Inicio"
+    >
+      <ArchitecturalEmblem
+        width={46}
+        height={27}
+        className={isLight ? "text-gold-400 shrink-0" : "text-gold-600 shrink-0"}
+      />
+      <div className="flex flex-col leading-none">
+        <span
+          className={cn(
+            "text-[15px] font-semibold tracking-[0.04em]",
+            isLight ? "text-white" : "text-ink-900"
+          )}
+        >
+          AMARU INMUEBLES
+        </span>
+        {showTagline && (
+          <span
+            className={cn(
+              "text-[10px] font-medium tracking-[0.14em] mt-1",
+              isLight ? "text-slate-300" : "text-ink-500"
+            )}
+          >
+            Gestión Inmobiliaria
+          </span>
+        )}
+      </div>
+    </Link>
   );
 }

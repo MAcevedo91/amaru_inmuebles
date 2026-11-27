@@ -6,8 +6,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatPrice(price: number, currency = "UF") {
-  if (currency === "UF") {
-    return `${price.toLocaleString("es-CL")} UF`;
+  if (currency.startsWith("UF")) {
+    return `${price.toLocaleString("es-CL")} ${currency}`;
   }
   if (currency === "USD") {
     return `USD $${price.toLocaleString("es-CL")}`;

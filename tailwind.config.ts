@@ -9,38 +9,38 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Acento único — amber cálido de la imagen de referencia
+        // Acento cálido bronce-ámbar — único acento cromático en todo el sistema
         gold: {
-          50:  "#FFFBEB",
-          100: "#FEF3C7",
-          200: "#FDE68A",
-          300: "#FCD34D",
-          400: "#FBBF24",
-          500: "#F5A623", // ← acento principal: botones, links activos
-          600: "#D97706",
-          700: "#B45309",
-          800: "#92400E",
-          900: "#78350F",
+          50: "#FEF8EC",
+          100: "#FDECCB",
+          200: "#FBD896",
+          300: "#F8C364",
+          400: "#F5B03B",
+          500: "#EEA024",
+          600: "#C57C11",
+          700: "#965B0A",
         },
-        // Ramp neutral cálida (grafito levemente cálido)
+        // Escala piedra cálida (travertino) — fondos claros, bordes y texto accesible
         ink: {
-          50:  "#F9F8F7",
-          100: "#F2F0EE",
-          200: "#E5E1DC",
-          300: "#CCC5BC",
-          400: "#A89E92",
-          500: "#857870",
-          600: "#6B5E55",
-          700: "#4A3F38",
-          800: "#2D2520",
-          900: "#1A1310",
-          950: "#0F0C09",
+          50: "#F7F5F0",
+          100: "#EFECE4",
+          200: "#E2DDD2",
+          300: "#C8C2B4",
+          400: "#8A8478",
+          500: "#68635A",
+          600: "#4F4B43",
+          700: "#3A3731",
+          800: "#262420",
+          900: "#151412",
+          950: "#0D0D0C",
         },
-        // Superficie oscura del hero y la banner
+        // Pizarra arquitectónica nocturna — navbar, hero backdrop, banners oscuros
         dark: {
-          900: "#0F1114",
-          800: "#15181E",
-          700: "#1E2229",
+          600: "#2A3447",
+          700: "#1E2636",
+          800: "#141B29",
+          900: "#0D121D",
+          950: "#080B12",
         },
       },
       fontFamily: {
@@ -49,17 +49,24 @@ const config: Config = {
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
+          "Roboto",
           "Helvetica Neue",
           "Arial",
           "sans-serif",
         ],
+        serif: ["Georgia", "Cambria", "Times New Roman", "serif"],
       },
       boxShadow: {
-        card: "0 1px 3px 0 rgba(0,0,0,0.06), 0 1px 2px -1px rgba(0,0,0,0.04)",
-        "card-hover": "0 4px 12px 0 rgba(0,0,0,0.08), 0 2px 6px -2px rgba(0,0,0,0.05)",
+        card: "0 1px 2px rgba(13, 18, 29, 0.05)",
+        "card-hover": "0 8px 24px rgba(13, 18, 29, 0.08)",
+        "card-lg": "0 16px 40px rgba(8, 11, 18, 0.22)",
+      },
+      transitionTimingFunction: {
+        architecture: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
     },
   },
   plugins: [],
 };
+
 export default config;

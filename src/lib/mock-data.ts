@@ -53,10 +53,10 @@ export const FEATURED_PROPERTIES: PropertyItem[] = [
     parkingSpots: 3,
     featured: true,
     imageUrl:
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1200&auto=format&fit=crop",
     gallery: [
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1200&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?q=80&w=1200&auto=format&fit=crop",
     ],
     features: [
       "Ascensor directo al palier",
@@ -85,7 +85,7 @@ export const FEATURED_PROPERTIES: PropertyItem[] = [
     parkingSpots: 4,
     featured: true,
     imageUrl:
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1200&auto=format&fit=crop",
     gallery: [
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1200&auto=format&fit=crop",
@@ -188,6 +188,36 @@ export const FEATURED_PROPERTIES: PropertyItem[] = [
       "Acceso directo a ciclovías y áreas verdes",
     ],
   },
+  {
+    id: "prop-7",
+    title: "Oficina Corporativa Full Floor en Barrio El Golf",
+    slug: "oficina-corporativa-barrio-el-golf",
+    description:
+      "Planta libre corporativa habilitada con estándares Clase A en torre emblemática de Apoquindo. Recepción privada, cuatro salas de directorio acústicas, kitchenette equipado y vista despejada a la cordillera.",
+    operation: "VENTA",
+    propertyType: "OFICINA",
+    price: 24800,
+    currency: "UF",
+    location: "Av. Apoquindo, Barrio El Golf",
+    commune: "Las Condes",
+    bedrooms: 4,
+    bathrooms: 4,
+    builtArea: 310,
+    totalArea: 310,
+    parkingSpots: 6,
+    featured: true,
+    imageUrl:
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop",
+    gallery: [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop",
+    ],
+    features: [
+      "Planta libre con climatización VRV independiente",
+      "6 estacionamientos y 2 bodegas incluidas",
+      "Certificación LEED Gold y control de acceso biométrico",
+      "Habilitación ejecutiva lista para operar",
+    ],
+  },
 ];
 
 export const SERVICES: ServiceItem[] = [
@@ -276,8 +306,8 @@ export const TESTIMONIALS = [
   {
     quote:
       "La discreción y profesionalismo de Amaru Inmuebles marcaron la diferencia al vender nuestra casa en Vitacura. Cada visita fue calificada con anticipación y el cierre legal se completó sin contratiempos.",
-    author: "Matías Echeverría",
-    role: "Empresario & Inversionista",
+    author: "Matías Errázuriz",
+    role: "Empresario e Inversionista",
     city: "Vitacura, Santiago",
   },
   {
@@ -290,7 +320,7 @@ export const TESTIMONIALS = [
   {
     quote:
       "Excelente rigor técnico en la tasación de nuestra propiedad en La Dehesa. Su equipo no solo asesoró en la venta sino en toda la estructuración tributaria y notarial. Totalmente recomendados.",
-    author: "Carlos Undurraga V.",
+    author: "Rodrigo Valdivieso",
     role: "Director de Empresas",
     city: "Lo Barnechea, Santiago",
   },
